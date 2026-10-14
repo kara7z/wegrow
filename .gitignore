@@ -1,0 +1,27 @@
+# Maven / Java build
+target/
+bin/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven wrapper (keep .mvn/*.config)
+.mvn/wrapper/maven-wrapper.jar
+!/.mvn/jvm.config
+!/.mvn/maven.config
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+
+# VS Code, OS
+.vscode/
+.DS_Store
+Thumbs.db
