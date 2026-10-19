@@ -50,6 +50,7 @@ Attention : `mvn exec:java` seul ne compile pas. Toujours `mvn compile exec:java
 | Méthode | URI | Effet | Codes |
 |---|---|---|---|
 | GET | `/api/health` | état app + base | 200 |
+| GET | `/api/departements` | liste des départements `[{id, nom, description, nombreEmployes}]`, triée par `nom` | 200 |
 | POST | `/api/departements` | crée un département (`nom`, `description`) | 201, 409 (nom déjà pris), 400 (`nom` manquant) |
 
 Exemples :

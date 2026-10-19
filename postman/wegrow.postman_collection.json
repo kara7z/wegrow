@@ -19,6 +19,20 @@
       }
     },
     {
+      "name": "List departments (with employee count)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/departements",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "departements"]
+        },
+        "description": "Expect 200 with [{id, nom, description, nombreEmployes}], alphabetical by nom. Empty database gives []."
+      }
+    },
+    {
       "name": "Create department",
       "request": {
         "method": "POST",

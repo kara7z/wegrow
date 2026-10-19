@@ -2,9 +2,13 @@ package com.example.wegrow.controller;
 
 import com.example.wegrow.model.Department;
 import com.example.wegrow.repository.DepartmentRepository;
+import com.example.wegrow.repository.EmployeeRepository;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class DepartmentController {
 
   private final DepartmentRepository departments;
+  private final EmployeeRepository employees;
 
-  public DepartmentController(DepartmentRepository departments) {
+  public DepartmentController(DepartmentRepository departments, EmployeeRepository employees) {
     this.departments = departments;
+    this.employees = employees;
   }
 
   public record DeptRequest(String nom, String description) {
@@ -30,6 +36,21 @@ public class DepartmentController {
     static DeptResponse from(Department d) {
       return new DeptResponse(d.getId(), d.getName(), d.getDescription());
     }
+  }
+
+  public record DeptWithCountResponse(Long id, String nom, String description, Long nombreEmployes) {
+    static DeptWithCountResponse from(Department d, Long count) {
+      return new DeptWithCountResponse(d.getId(), d.getName(), d.getDescription(), count);
+    }
+  }
+
+  @GetMapping
+  public ResponseEntity<List<DeptWithCountResponse>> list() {
+    List<DeptWithCountResponse> result = departments.findAll().stream()
+        .map(d -> DeptWithCountResponse.from(d, employees.countByDepartmentId(d.getId())))
+        .sorted(Comparator.comparing(DeptWithCountResponse::nom, String.CASE_INSENSITIVE_ORDER))
+        .toList();
+    return ResponseEntity.ok(result);
   }
 
   @PostMapping

@@ -11,5 +11,7 @@ public interface EmployeeRepository extends ListCrudRepository<Employee, Long> {
 
   List<Employee> findByDepartmentId(Long departmentId);
 
+  long countByDepartmentId(Long departmentId);
+
   List<Employee> findByContractType(ContractType contractType);
 }
