@@ -57,5 +57,27 @@
           class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSource"/>
     </bean>
+    <!-- Spring Data JDBC -->
+
+    <bean id="jdbcConfiguration"
+          class="org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration"/>
+
+    <!-- Repositories -->
+
+    <bean id="departmentRepository"
+          class="org.springframework.data.jdbc.repository.support.JdbcRepositoryFactoryBean">
+        <constructor-arg value="com.example.wegrow.repository.DepartmentRepository"/>
+        <property name="mappingContext" ref="jdbcMappingContext"/>
+        <property name="converter" ref="jdbcConverter"/>
+        <property name="dialect" ref="jdbcDialect"/>
+    </bean>
+
+    <bean id="employeeRepository"
+          class="org.springframework.data.jdbc.repository.support.JdbcRepositoryFactoryBean">
+        <constructor-arg value="com.example.wegrow.repository.EmployeeRepository"/>
+        <property name="mappingContext" ref="jdbcMappingContext"/>
+        <property name="converter" ref="jdbcConverter"/>
+        <property name="dialect" ref="jdbcDialect"/>
+    </bean>
 
 </beans>
