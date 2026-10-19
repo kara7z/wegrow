@@ -13,6 +13,7 @@
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>6.2.19</spring.version>
         <spring.data.version>3.5.13</spring.data.version>
@@ -103,6 +104,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
+                <configuration>
+                    <parameters>true</parameters>
+                </configuration>
             </plugin>
 
             <plugin>

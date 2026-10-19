@@ -73,4 +73,19 @@ public class DepartmentController {
           .body(Map.of("message", "Un département avec ce nom existe déjà"));
     }
   }
+
+  @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@org.springframework.web.bind.annotation.PathVariable Long id) {
+    if (!departments.existsById(id)) {
+      return ResponseEntity.notFound().build();
+    }
+
+    if (employees.countByDepartmentId(id) > 0) {
+      return ResponseEntity.status(409)
+          .body(Map.of("message", "Le département contient encore des employés"));
+    }
+
+    departments.deleteById(id);
+    return ResponseEntity.noContent().build();
+  }
 }
