@@ -1,0 +1,84 @@
+{
+  "info": {
+    "name": "WeGrow API",
+    "description": "Base URL: http://localhost:8081/wegrow\n\nStart Payara with:\nasadmin --port 4849 start-domain\n\nMariaDB: wegrow database on localhost:3306",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Create department",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Informatique\",\n  \"description\": \"Service informatique\"\n}\n"
+        },
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/departements",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "departements"]
+        },
+        "description": "Expect 201 with id. If the name already exists: 409."
+      }
+    },
+    {
+      "name": "Create department - duplicate name (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Informatique\",\n  \"description\": \"Should return 409 if \u0027Informatique\u2019 already exists\"\n}\n"
+        },
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/departements",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "departements"]
+        },
+        "description": "Send twice: the second call answers 409."
+      }
+    },
+    {
+      "name": "Create department - missing nom (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}\n"
+        },
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/departements",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "departements"]
+        }
+      }
+    }
+  ]
+}
