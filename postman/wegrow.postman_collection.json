@@ -93,6 +93,20 @@
           "path": ["wegrow", "api", "departements"]
         }
       }
+    },
+    {
+      "name": "Delete department by id",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8081/wegrow/api/departements/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["wegrow", "api", "departements", "1"]
+        },
+        "description": "Expect 204 empty body. 404 unknown id, 409 if the department still has employees (change the id)."
+      }
     }
   ]
 }
