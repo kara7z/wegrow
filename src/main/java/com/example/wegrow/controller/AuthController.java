@@ -4,14 +4,13 @@ package com.example.wegrow.controller;
  * AuthController
  */
 public class AuthController {
-    private int id =0; 
-    private String j = " h";
-    private int nextId;
+    private int id ;
+    private int nextId = 0;
     
-    AuthController(String j){
-        this.j = j;
-        this.id = ++nextId;
+    AuthController(){
+        id = ++nextId;
     }
+
     public int getId() {
         return id;
     }

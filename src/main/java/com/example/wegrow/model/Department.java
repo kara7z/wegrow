@@ -1,24 +1,29 @@
 package com.example.wegrow.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * Department
  */
+@Table("departments")
 public class Department {
-  private long id;
-  private String name;
-  private String description;
-  private static long nextId = 0;
+  @Id
+  private Long id;
 
-  Department() {
+  private String name;
+
+  private String description;
+
+  protected Department() {
   }
 
-  Department(String name, String description) {
-    this.id = ++nextId;
+  public Department(String name, String description) {
     this.name = name;
     this.description = description;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 

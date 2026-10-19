@@ -1,47 +1,61 @@
 package com.example.wegrow.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import com.example.wegrow.enums.ContractType;
 
 /**
  * Employee
  */
+@Table("employees")
 public class Employee {
 
-  private long id;
+  @Id
+  private Long id;
+
   private String registrationNumber;
+
   private String lastName;
+
   private String firstName;
+
   private String position;
+
   private ContractType contractType;
-  private long departementId;
-  private static long nexId = 0;
 
-  Employee() {
+  private Long departmentId;
 
+  private static long nextRegistrationSeq = 0;
+
+  protected Employee() {
   }
 
-  Employee(String lastName, String firstName, String position,
-      ContractType contractType, Long departementId) {
-    this.id = ++nexId;
+  public Employee(String lastName, String firstName, String position,
+      ContractType contractType, Long departmentId) {
     this.registrationNumber = createRegistrationNumber();
     this.lastName = lastName;
     this.firstName = firstName;
     this.position = position;
     this.contractType = contractType;
-    this.departementId = departementId;
+    this.departmentId = departmentId;
   }
 
   public String createRegistrationNumber() {
-    Long id = getId();
+    long number = ++nextRegistrationSeq;
 
-    if (id > 9 && id < 99) {
-      return "EMP" + "0" + id;
-    } else if (id > 0 && id < 9) {
-      return "EMP" + "00" + id;
+    if (number > 9 && number < 99) {
+      return "EMP" + "0" + number;
+    } else if (number > 0 && number < 9) {
+      return "EMP" + "00" + number;
     } else {
-      return "EMP" + id;
+      return "EMP" + number;
     }
 
+  }
+
+  public String getRegistrationNumber() {
+    return registrationNumber;
   }
 
   public ContractType getContractType() {
@@ -52,11 +66,11 @@ public class Employee {
     return firstName;
   }
 
-  public long getDepartementId() {
-    return departementId;
+  public Long getDepartmentId() {
+    return departmentId;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -72,8 +86,8 @@ public class Employee {
     this.contractType = contractType;
   }
 
-  public void setDepartementId(long departementId) {
-    this.departementId = departementId;
+  public void setDepartmentId(Long departmentId) {
+    this.departmentId = departmentId;
   }
 
   public void setFirstName(String firstName) {
@@ -86,5 +100,9 @@ public class Employee {
 
   public void setPosition(String position) {
     this.position = position;
+  }
+
+  public void setRegistrationNumber(String registrationNumber) {
+    this.registrationNumber = registrationNumber;
   }
 }
