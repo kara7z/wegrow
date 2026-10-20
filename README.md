@@ -50,8 +50,8 @@ Attention : `mvn exec:java` seul ne compile pas. Toujours `mvn compile exec:java
 | Méthode | URI | Effet | Codes |
 |---|---|---|---|
 | GET | `/api/health` | état app + base | 200 |
-| GET | `/api/departements` | liste des départements `[{id, nom, description, nombreEmployes}]`, triée par `nom` | 200 |
-| POST | `/api/departements` | crée un département (`nom`, `description`) | 201, 409 (nom déjà pris), 400 (`nom` manquant) |
+| GET | `/api/departements` | liste des départements `[{id, name, description, employeeCount}]`, triée par `name` | 200 |
+| POST | `/api/departements` | crée un département (`name`, `description`), JSON ou form-data | 201, 409 (nom déjà pris), 400 (`name` manquant) |
 | DELETE | `/api/departements/{id}` | supprime un département | 204, 404 (id inconnu), 409 (contient des employés) |
 
 Exemples :
@@ -62,16 +62,20 @@ curl -s http://localhost:8081/wegrow/api/health
 curl -s -w '\nHTTP %{http_code}\n' \
   -X POST http://localhost:8081/wegrow/api/departements \
   -H 'Content-Type: application/json' \
-  -d '{"nom":"Informatique","description":"Service informatique"}'
+  -d '{"name":"IT","description":"IT department"}'
 ```
 
-Les champs JSON utilisent les noms français de l'énoncé (`nom`, `description`),
-mappés vers les colonnes anglaises de la base (`name`, `description`).
+Les champs de requête et de réponse sont en anglais : `name`, `description`,
+et `employeeCount` dans la liste. Le chemin `/api/departements` reste inchangé.
 
 ### Tester avec Postman
 
 La collection est prête dans `postman/wegrow.postman_collection.json`
 (health + création/409/400). Dans Postman : **Import → File** → choisir le fichier.
+
+Pour créer via **Body → form-data**, ajouter deux champs de type **Text** :
+`name` (obligatoire) et `description` (facultatif). Ne pas définir manuellement
+`Content-Type` : Postman génère l'en-tête multipart avec sa boundary.
 
 ## Structure du projet
 
@@ -97,7 +101,7 @@ src/test/java/com/example/    MainTest (JUnit)
 Déployé manuellement (script) :
 
 ```bash
-PAYARA=/tmp/opencode/payara6            # installation actuelle (voir note ci-dessous)
+PAYARA="$HOME/Documents/servers/payara6"
 $PAYARA/bin/asadmin --port 4849 start-domain
 $PAYARA/bin/asadmin --port 4849 deploy --name wegrow --force target/wegrow.war
 $PAYARA/bin/asadmin --port 4849 list-applications
@@ -105,6 +109,11 @@ $PAYARA/bin/asadmin --port 4849 list-applications
 
 Notes :
 
+- Payara est installé dans `~/Documents/servers/payara6`, un dossier permanent
+  qui reste disponible après redémarrage. Le script n'utilise plus `/tmp`.
+  Pour une autre installation : `PAYARA_HOME=/chemin/payara6 ./wegrow.sh start`.
+- Après redémarrage de la machine, lancer `./wegrow.sh start`.
+  Après une nouvelle installation de Payara, lancer aussi `./wegrow.sh deploy`.
 - `WEB-INF/beans.xml` (fichier vide) est **obligatoire** : sans lui Payara échoue au
   déploiement avec « CDI is not available ».
 - La duplication de la config Spring sur deux fichiers est classique :

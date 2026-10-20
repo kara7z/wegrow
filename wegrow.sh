@@ -1,9 +1,13 @@
 #!/bin/bash
 # WeGrow helper: ./wegrow.sh start|stop|status|deploy|log
-PAYARA="$HOME/Documents/servers/payara6"
-[ -d "$PAYARA" ] || PAYARA="/tmp/opencode/payara6"
+PAYARA="${PAYARA_HOME:-$HOME/Documents/servers/payara6}"
 ADMIN="$PAYARA/bin/asadmin"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [ ! -x "$ADMIN" ]; then
+  echo "Payara not found at $PAYARA. Install it there or set PAYARA_HOME." >&2
+  exit 1
+fi
 
 case "$1" in
   start)
